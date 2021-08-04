@@ -6,10 +6,10 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 3
-SHORT_BREAK_MIN = 2
-LONG_BREAK_MIN = 7
-reps = 1
+WORK_MIN = 1
+SHORT_BREAK_MIN = 1
+LONG_BREAK_MIN = 1
+reps = 0
 
 
 # ---------------------------- TIMER RESET ------------------------------- #
@@ -18,34 +18,44 @@ reps = 1
 def start_timer():
     start_button["state"] = "disabled"
     global reps
-
-    if reps % 2 == 1:
-        countdown(WORK_MIN)
-    else:
-        if reps == 8:
-            countdown(LONG_BREAK_MIN)
-        else:
-            countdown(SHORT_BREAK_MIN)
+    if reps == 0:
+        check_mark.config(text="")
     reps += 1
+    if reps < 9:
+        if reps % 2 == 1:
+            countdown(WORK_MIN)
+            text_timer.config(text="\nWork", fg=GREEN)
+        else:
+            if reps == 8:
+                countdown(LONG_BREAK_MIN)
+                text_timer.config(text="Long\nBreak", fg=PINK)
+            else:
+                countdown(SHORT_BREAK_MIN)
+                text_timer.config(text="\nBreak", fg=PINK)
+    else:
+        text_timer.config(text="Pomodoro\nTimer", fg=GREEN)
+        check_mark.config(text="Done!", fg="olive drab", font=(FONT_NAME, 18, "bold"))
+        reps = 0
+        start_button["state"] = "normal"
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def countdown(count):
     global reps
-    min = int(count / 60)
-    sec = count % 60
-    if sec < 10:
-        sec = "0" + str(sec)
-    canvas.itemconfig(timer_text, text=f"{min}:{sec}")
+    count_min = int(count / 60)
+    count_sec = count % 60
+    if count_sec < 10:
+        count_sec = "0" + str(count_sec)
+    canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
         window.after(1000, countdown, count - 1)
     if reps < 9 and count == 0:
-        check_marks[reps - 2].place(x=48 + (reps - 2) * 35, y=430)
-        window.after(1000, start_timer)
-    elif reps == 9 and count == 0:
-        check_marks[reps - 2].place(x=48 + (reps - 2) * 35, y=430)
-        start_button["state"] = "normal"
-
+        marks = ""
+        for _ in range(reps):
+            marks += "✔"
+        check_mark.config(text=marks)
+        check_mark.grid(column=1, row=3)
+        start_timer()
 
 
 
@@ -76,8 +86,6 @@ reset_button = Button(text="Reset", bg="bisque", fg="tomato", highlightthickness
                       activebackground="bisque")
 reset_button.grid(column=2, row=2)
 
-check_marks = []
-for i in range(8):
-    check_marks.append(Label(text="✔", font=(FONT_NAME, 18, "bold"), fg="olive drab", bg="bisque"))
+check_mark = Label(text="✔", font=(FONT_NAME, 18, "bold"), fg="olive drab", bg="bisque")
 
 window.mainloop()
