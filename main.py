@@ -6,9 +6,10 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 25
+WORK_MIN = 15
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
+reps = 1
 
 
 # ---------------------------- TIMER RESET ------------------------------- #
@@ -16,7 +17,15 @@ LONG_BREAK_MIN = 20
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
     start_button["state"] = "disabled"
-    countdown(25 * 60)
+    global reps
+    if reps % 2 == 1:
+        countdown(WORK_MIN)
+    else:
+        if reps == 8:
+            countdown(LONG_BREAK_MIN)
+        else:
+            countdown(SHORT_BREAK_MIN)
+    reps += 1
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
@@ -28,6 +37,9 @@ def countdown(count):
     canvas.itemconfig(timer_text, text=f"{min}:{sec}")
     if count > 0:
         window.after(1000, countdown, count - 1)
+    elif reps < 9:
+        window.after(1000, start_timer)
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
