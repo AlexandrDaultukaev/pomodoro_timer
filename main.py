@@ -6,15 +6,25 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 1
-SHORT_BREAK_MIN = 1
-LONG_BREAK_MIN = 1
+WORK_MIN = 1500
+SHORT_BREAK_MIN = 300
+LONG_BREAK_MIN = 1200
 reps = 0
+timer = None
 
 
 # ---------------------------- TIMER RESET ------------------------------- #
+def reset_timer():
+    global reps
+    window.after_cancel(timer)
+    reps = 0
+    text_timer.config(text="Pomodoro\nTimer", fg=GREEN)
+    start_button["state"] = "normal"
+    canvas.itemconfig(timer_text, text=f"00:00")
+    check_mark.config(text="")
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
+
+# ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
     start_button["state"] = "disabled"
     global reps
@@ -41,14 +51,14 @@ def start_timer():
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def countdown(count):
-    global reps
+    global timer
     count_min = int(count / 60)
     count_sec = count % 60
     if count_sec < 10:
         count_sec = "0" + str(count_sec)
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")
     if count > 0:
-        window.after(1000, countdown, count - 1)
+        timer = window.after(1000, countdown, count - 1)
     if reps < 9 and count == 0:
         marks = ""
         for _ in range(reps):
@@ -56,7 +66,6 @@ def countdown(count):
         check_mark.config(text=marks)
         check_mark.grid(column=1, row=3)
         start_timer()
-
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -83,7 +92,7 @@ start_button.grid(column=0, row=2)
 
 reset_button = Button(text="Reset", bg="bisque", fg="tomato", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
                       disabledforeground="salmon1", activeforeground="orange red",
-                      activebackground="bisque")
+                      activebackground="bisque", command=reset_timer)
 reset_button.grid(column=2, row=2)
 
 check_mark = Label(text="✔", font=(FONT_NAME, 18, "bold"), fg="olive drab", bg="bisque")
