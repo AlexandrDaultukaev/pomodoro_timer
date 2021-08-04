@@ -15,6 +15,7 @@ LONG_BREAK_MIN = 20
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
+    start_button["state"] = "disabled"
     countdown(25 * 60)
 
 
@@ -47,10 +48,13 @@ timer_text = canvas.create_text(120, 145, text="00:00", fill="white", font=(FONT
 canvas.grid(column=1, row=1)
 
 start_button = Button(text="Start", bg="bisque", fg="tomato", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
-                      command=start_timer)
+                      command=start_timer, disabledforeground="salmon1", activeforeground="orange red",
+                      activebackground="bisque")
 start_button.grid(column=0, row=2)
 
-reset_button = Button(text="Reset", bg="bisque", fg="tomato", highlightthickness=0, bd=0, font=("Arial", 15, "bold"))
+reset_button = Button(text="Reset", bg="bisque", fg="tomato", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
+                      disabledforeground="salmon1", activeforeground="orange red",
+                      activebackground="bisque")
 reset_button.grid(column=2, row=2)
 
 check_mark = Label(text="✔", font=(FONT_NAME, 18, "bold"), fg="olive drab", bg="bisque")
