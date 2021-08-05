@@ -1,5 +1,4 @@
 from tkinter import *
-
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
 RED = "#e7305b"
@@ -16,11 +15,17 @@ timer = None
 # ---------------------------- SETTINGS ------------------------------- #
 
 def settings():
-
     setting = Toplevel(window)
     setting.maxsize(500, 500)
     setting.minsize(500, 500)
+    setting.title("Settings")
     setting.config(bg="coral1", padx=70, pady=10)
+
+    imag = PhotoImage(file="tomato.png")
+    im_canvas = Canvas(setting, width=250, height=250, bg="coral1", highlightthickness=0)
+
+    im_canvas.pack()
+    im_canvas.create_image(120, 105, image=imag)
 
     work_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
     work_min_text = Label(setting, font=(FONT_NAME, 18, "bold"), text="WORK\nsec", bg="coral1")
@@ -39,6 +44,9 @@ def settings():
     long_break_min.insert(END, "1200")
     long_break_min.place(x=280, y=210)
     long_break_min_text.place(x=250, y=250)
+
+    setting.mainloop()
+
 
 # ---------------------------- TIMER RESET ------------------------------- #
 def reset_timer():
