@@ -15,14 +15,23 @@ timer = None
 
 
 # ---------------------------- SETTINGS ------------------------------- #
+def close_set(setting):
+    start_button["state"] = "normal"
+    settings_button["state"] = "normal"
+    setting.destroy()
+
+
 def set_apply(work, short, long):
     global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
-    WORK_MIN = work*60
-    SHORT_BREAK_MIN = short*60
-    LONG_BREAK_MIN = long*60
+    WORK_MIN = work * 60
+    SHORT_BREAK_MIN = short * 60
+    LONG_BREAK_MIN = long * 60
 
 
 def settings():
+    start_button["state"] = "disabled"
+    settings_button["state"] = "disabled"
+
     setting = Toplevel(window)
     setting.maxsize(500, 500)
     setting.minsize(500, 500)
@@ -36,30 +45,30 @@ def settings():
     image_label.place(x=120, y=55)
 
     work_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
-    work_min.insert(END, string=str(int(WORK_MIN/60)))
+    work_min.insert(END, string=str(int(WORK_MIN / 60)))
     work_min_text = Label(setting, font=(FONT_NAME, 18, "bold"), text="WORK\nmin", bg="coral1")
     work_min.place(x=10, y=210)
     work_min_text.place(x=10, y=250)
 
     break_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
-    break_min.insert(END, string=str(int(SHORT_BREAK_MIN/60)))
+    break_min.insert(END, string=str(int(SHORT_BREAK_MIN / 60)))
     break_min_text = Label(setting, font=(FONT_NAME, 18, "bold"), text="BREAK\nmin", bg="coral1")
     break_min.place(x=145, y=210)
     break_min_text.place(x=145, y=250)
 
     long_break_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0,
                            bd=0)
-    long_break_min.insert(END, str(int(LONG_BREAK_MIN/60)))
+    long_break_min.insert(END, str(int(LONG_BREAK_MIN / 60)))
     long_break_min_text = Label(setting, font=(FONT_NAME, 18, "bold"), text="LONG BREAK\nmin", bg="coral1")
     long_break_min.place(x=280, y=210)
     long_break_min_text.place(x=250, y=250)
 
     apply_button = Button(setting, text="Apply", bg="coral1", fg="white", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
                           disabledforeground="salmon1", activeforeground="orange red",
-                          activebackground="bisque", command= lambda: set_apply(int(work_min.get()), int(break_min.get()),
-                                                                                int(long_break_min.get())))
+                          activebackground="bisque", command=lambda: set_apply(int(work_min.get()), int(break_min.get()),
+                                                                               int(long_break_min.get())))
     apply_button.place(x=150, y=400)
-
+    setting.protocol("WM_DELETE_WINDOW", lambda: close_set(setting))
     setting.mainloop()
 
 
