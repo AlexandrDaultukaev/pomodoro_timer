@@ -1,4 +1,6 @@
 from tkinter import *
+from PIL import Image, ImageTk
+
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
 RED = "#e7305b"
@@ -13,6 +15,12 @@ timer = None
 
 
 # ---------------------------- SETTINGS ------------------------------- #
+def set_apply(work, short, long):
+    global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
+    WORK_MIN = work
+    SHORT_BREAK_MIN = short
+    LONG_BREAK_MIN = long
+
 
 def settings():
     setting = Toplevel(window)
@@ -20,30 +28,37 @@ def settings():
     setting.minsize(500, 500)
     setting.title("Settings")
     setting.config(bg="coral1", padx=70, pady=10)
-
-    imag = PhotoImage(file="tomato.png")
-    im_canvas = Canvas(setting, width=250, height=250, bg="coral1", highlightthickness=0)
-
-    im_canvas.pack()
-    im_canvas.create_image(120, 105, image=imag)
+    image = Image.open("tomato.png")
+    resized_image = image.resize((125, 125))
+    imag = ImageTk.PhotoImage(resized_image)
+    image_label = Label(setting, image=imag)
+    image_label.config(bg="coral1")
+    image_label.place(x=120, y=55)
 
     work_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
+    work_min.insert(END, string=str(WORK_MIN))
     work_min_text = Label(setting, font=(FONT_NAME, 18, "bold"), text="WORK\nsec", bg="coral1")
-    work_min.insert(END, string="1500")
     work_min.place(x=10, y=210)
     work_min_text.place(x=10, y=250)
 
     break_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
+    break_min.insert(END, string=str(SHORT_BREAK_MIN))
     break_min_text = Label(setting, font=(FONT_NAME, 18, "bold"), text="BREAK\nsec", bg="coral1")
-    break_min.insert(END, string="300")
     break_min.place(x=145, y=210)
     break_min_text.place(x=145, y=250)
 
-    long_break_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
+    long_break_min = Entry(setting, font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0,
+                           bd=0)
+    long_break_min.insert(END, str(LONG_BREAK_MIN))
     long_break_min_text = Label(setting, font=(FONT_NAME, 18, "bold"), text="LONG BREAK\nsec", bg="coral1")
-    long_break_min.insert(END, "1200")
     long_break_min.place(x=280, y=210)
     long_break_min_text.place(x=250, y=250)
+
+    apply_button = Button(setting, text="Apply", bg="coral1", fg="white", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
+                          disabledforeground="salmon1", activeforeground="orange red",
+                          activebackground="bisque", command= lambda: set_apply(int(work_min.get()), int(break_min.get()),
+                                                                                int(long_break_min.get())))
+    apply_button.place(x=150, y=400)
 
     setting.mainloop()
 
