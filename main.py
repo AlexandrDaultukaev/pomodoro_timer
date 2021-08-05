@@ -20,6 +20,7 @@ def reset_timer():
     reps = 0
     text_timer.config(text="Pomodoro\nTimer", fg=GREEN)
     start_button["state"] = "normal"
+    reset_button["state"] = "disabled"
     canvas.itemconfig(timer_text, text=f"00:00")
     check_mark.config(text="")
 
@@ -27,6 +28,7 @@ def reset_timer():
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
     start_button["state"] = "disabled"
+    reset_button["state"] = "normal"
     global reps
     if reps == 0:
         check_mark.config(text="")
@@ -92,7 +94,7 @@ start_button.grid(column=0, row=2)
 
 reset_button = Button(text="Reset", bg="bisque", fg="tomato", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
                       disabledforeground="salmon1", activeforeground="orange red",
-                      activebackground="bisque", command=reset_timer)
+                      activebackground="bisque", command=reset_timer, state="disabled")
 reset_button.grid(column=2, row=2)
 
 check_mark = Label(text="✔", font=(FONT_NAME, 18, "bold"), fg="olive drab", bg="bisque")
