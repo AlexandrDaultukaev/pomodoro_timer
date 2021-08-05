@@ -13,6 +13,32 @@ reps = 0
 timer = None
 
 
+# ---------------------------- SETTINGS ------------------------------- #
+def settings():
+    settings = Canvas(width=1000, height=1000, bg="bisque", highlightthickness=0)
+    set_img = PhotoImage(file="tomato.png")
+    set_img = set_img.subsample(2, 2)
+    settings.create_image(120, 125, image=set_img)
+    settings.place(x=-100, y=-100)
+    settings.create_rectangle(40, 100, 520, 580, fill="coral1", outline="tomato", width=20)
+    work_min = Entry(font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
+    work_min_text = Label(font=(FONT_NAME, 18, "bold"), text="WORK\nsec", bg="coral1")
+    work_min.insert(END, string="1500")
+    work_min.place(x=10, y=210)
+    work_min_text.place(x=10, y=250)
+    break_min = Entry(font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
+    break_min_text = Label(font=(FONT_NAME, 18, "bold"), text="BREAK\nsec", bg="coral1")
+    break_min.insert(END, string="300")
+    break_min.place(x=145, y=210)
+    break_min_text.place(x=145, y=250)
+    long_break_min = Entry(font=(FONT_NAME, 18, "bold"), width=5, bg="salmon1", highlightthickness=0, bd=0)
+    long_break_min_text = Label(font=(FONT_NAME, 18, "bold"), text="LONG BREAK\nsec", bg="coral1")
+    long_break_min.insert(END, "1200")
+    long_break_min.place(x=280, y=210)
+    long_break_min_text.place(x=250, y=250)
+    #settings.forget()
+
+
 # ---------------------------- TIMER RESET ------------------------------- #
 def reset_timer():
     global reps
@@ -96,6 +122,11 @@ reset_button = Button(text="Reset", bg="bisque", fg="tomato", highlightthickness
                       disabledforeground="salmon1", activeforeground="orange red",
                       activebackground="bisque", command=reset_timer, state="disabled")
 reset_button.grid(column=2, row=2)
+
+settings_button = Button(text="Settings", bg="bisque", fg="tomato", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
+                         disabledforeground="salmon1", activeforeground="orange red",
+                         activebackground="bisque", command=settings)
+settings_button.place(x=-50, y=20)
 
 check_mark = Label(text="✔", font=(FONT_NAME, 18, "bold"), fg="olive drab", bg="bisque")
 
