@@ -16,12 +16,16 @@ timer = None
 
 # ---------------------------- SETTINGS ------------------------------- #
 def close_set(setting):
+    """
+    Activates start and settings button when settings window closed
+    """
     start_button["state"] = "normal"
     settings_button["state"] = "normal"
     setting.destroy()
 
 
 def set_apply(work, short, long):
+    """Sets work and breaks time"""
     global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
     WORK_MIN = work * 60
     SHORT_BREAK_MIN = short * 60
@@ -29,6 +33,7 @@ def set_apply(work, short, long):
 
 
 def settings():
+    """Sets up work settings window"""
     start_button["state"] = "disabled"
     settings_button["state"] = "disabled"
 
@@ -74,11 +79,13 @@ def settings():
 
 # ---------------------------- TIMER RESET ------------------------------- #
 def reset_timer():
+    """Resets timer and check marks to zero"""
     global reps
     window.after_cancel(timer)
     reps = 0
     text_timer.config(text="Pomodoro\nTimer", fg=GREEN)
     start_button["state"] = "normal"
+    settings_button["state"] = "normal"
     reset_button["state"] = "disabled"
     canvas.itemconfig(timer_text, text=f"00:00")
     check_mark.config(text="")
@@ -86,6 +93,8 @@ def reset_timer():
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
+    """Activates timer"""
+    settings_button["state"] = "disabled"
     start_button["state"] = "disabled"
     reset_button["state"] = "normal"
     global reps
@@ -107,11 +116,13 @@ def start_timer():
         text_timer.config(text="Pomodoro\nTimer", fg=GREEN)
         check_mark.config(text="Done!", fg="olive drab", font=(FONT_NAME, 18, "bold"))
         reps = 0
+        settings_button["state"] = "normal"
         start_button["state"] = "normal"
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def countdown(count):
+    """Sets up countdown mechanism and changes numbers in timer every second"""
     global timer
     count_min = int(count / 60)
     count_sec = count % 60
