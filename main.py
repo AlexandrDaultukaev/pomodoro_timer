@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from PIL import Image, ImageTk
 
 # ---------------------------- CONSTANTS ------------------------------- #
@@ -27,9 +28,16 @@ def close_set(setting):
 def set_apply(work, short, long):
     """Sets work and breaks time"""
     global WORK_MIN, SHORT_BREAK_MIN, LONG_BREAK_MIN
-    WORK_MIN = work * 60
-    SHORT_BREAK_MIN = short * 60
-    LONG_BREAK_MIN = long * 60
+    try:
+        work = int(work)
+        short = int(short)
+        long = int(long)
+    except ValueError:
+        messagebox.showerror(title="Error", message="Enter only numbers!")
+    else:
+        WORK_MIN = work * 60
+        SHORT_BREAK_MIN = short * 60
+        LONG_BREAK_MIN = long * 60
 
 
 def settings():
@@ -70,8 +78,8 @@ def settings():
 
     apply_button = Button(setting, text="Apply", bg="coral1", fg="white", highlightthickness=0, bd=0, font=("Arial", 15, "bold"),
                           disabledforeground="salmon1", activeforeground="orange red",
-                          activebackground="bisque", command=lambda: set_apply(int(work_min.get()), int(break_min.get()),
-                                                                               int(long_break_min.get())))
+                          activebackground="bisque", command=lambda: set_apply(work_min.get(), break_min.get(),
+                                                                               long_break_min.get()))
     apply_button.place(x=150, y=400)
     setting.protocol("WM_DELETE_WINDOW", lambda: close_set(setting))
     setting.mainloop()
